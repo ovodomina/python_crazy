@@ -1,0 +1,26 @@
+name: Validador CI
+
+on: [push, pull_request]
+
+jobs:
+  qualidade:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Clonar repositorio
+        uses: actions/checkout@v3
+
+      - name: Configurar Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+
+      - name: Instalar Ferramentas
+        run: |
+          pip install -r requirements.txt
+
+      - name: Lint com Ruff
+        run: ruff check src/
+
+      - name: Testes com Pytest
+        run: |
+          PYTHONPATH=src python -m pytest tests/
